@@ -1,29 +1,35 @@
 ---
 language: python
-python: "2.7"
+services: docker
 
-# Use the new container infrastructure
-sudo: false
-
-# Install ansible
-addons:
-  apt:
-    packages:
-    - python-pip
+env:
+  global:
+    - ROLE_NAME: nfs-mount
+  matrix:
+    - MOLECULE_DISTRO: centos7
+    - MOLECULE_DISTRO: centos8
+    - MOLECULE_DISTRO: ubuntu1604
+    - MOLECULE_DISTRO: ubuntu1804
+    - MOLECULE_DISTRO: debian9
+    - MOLECULE_DISTRO: debian10
 
 install:
-  # Install ansible
-  - pip install ansible
+  # Install test dependencies.
+  - pip install molecule docker testinfra ansible-lint flake8 yamllint
 
-  # Check ansible version
-  - ansible --version
-
-  # Create ansible.cfg with correct roles_path
-  - printf '[defaults]\nroles_path=../' >ansible.cfg
+before_script:
+  # Use actual Ansible Galaxy role name for the project directory.
+  - cd ../
+  - mv ansible-$ROLE_NAME $ROLE_NAME
+  - cd $ROLE_NAME
 
 script:
-  # Basic role syntax check
-  - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
+  - molecule --version
+  - ansible --version
+  - molecule test
 
 notifications:
-  webhooks: https://galaxy.ansible.com/api/v1/notifications/
+  webhooks:
+    urls:
+      - "https://galaxy.ansible.com/api/v1/notifications/"
+    on_success: change
