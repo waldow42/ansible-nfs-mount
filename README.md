@@ -1,7 +1,7 @@
 NFS Mount
 =========
 
-Manage NFS4 mounts.
+Manage NFS mounts.
 
 
 Role Variables
@@ -20,12 +20,15 @@ Example Playbook
         nfs_share_mounts:
         - path: /mnt/remote
           location: nfs.example.org:/data
+          nfs_version: nfs
         - path: /mnt/readonly
           location: nfs.example.org:/read-only
           opts: "{{ nfs_mount_opts }},ro"
+          nfs_version: nfs4
 
 
 Author Information
 ------------------
 
 ome-devel@lists.openmicroscopy.org.uk
+sonic@justereseau.ca
