@@ -18,6 +18,7 @@
     fstype: "{{ item.nfs_version | default(nfs_version) }}"
     name: "{{ item.path }}"
     opts: "{{ item.opts | default(nfs_mount_opts) }}"
+    passno: "{{ item.passno | default(nfs_mount_passno) }}"
     src: "{{ item.location }}"
     state: mounted
   with_items: "{{ nfs_share_mounts }}"

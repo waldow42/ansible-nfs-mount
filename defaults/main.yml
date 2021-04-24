@@ -7,5 +7,8 @@ nfs_share_mounts: []
 # Default NFS4 mount options
 nfs_mount_opts: defaults
 
+# Default NFS passno
+nfs_mount_passno: 0
+
 # Default NFS version (nfs for v3)
 nfs_version: nfs
